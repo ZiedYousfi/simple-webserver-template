@@ -1,8 +1,9 @@
 use axum::{Form, Json, Router, routing::get};
 use std::net::SocketAddr;
 
-fn check_env_vars() {
+fn check_env_vars_and_init_logger() {
     dotenvy::dotenv().ok();
+    env_logger::init();
     let required_vars = ["RUST_LOG", "RUST_BACKTRACE"];
 
     let mut missing_or_empty_vars = Vec::new();
@@ -27,11 +28,9 @@ fn check_env_vars() {
 
 #[tokio::main]
 async fn main() {
-    if let Err(e) = env_logger::try_init() {
-        eprintln!("Failed to initialize logger: {e}");
-        std::process::exit(1);
-    }
-    check_env_vars();
+    check_env_vars_and_init_logger();
+
+    log::info!("Starting the simple web server...");
     let app = Router::new().nest("/api", Router::new().route("/", get(root).post(root_post)));
 
     let addr = SocketAddr::from(([0, 0, 0, 0], 3000));
