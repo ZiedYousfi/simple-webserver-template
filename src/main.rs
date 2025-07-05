@@ -1,4 +1,4 @@
-use axum::{routing::get, Form, Router, Json};
+use axum::{Form, Json, Router, routing::get};
 use std::net::SocketAddr;
 
 fn check_env_vars() {
