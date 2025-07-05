@@ -44,9 +44,11 @@ async fn main() {
 }
 
 async fn root() -> &'static str {
+    log::info!("Received GET request at /api");
     "Hello, World!"
 }
 
 async fn root_post(Form(payload): Form<std::collections::HashMap<String, String>>) -> Json<String> {
+    log::info!("Received POST request at /api with payload: {payload:?}");
     Json(format!("Received POST request with payload: {payload:?}"))
 }
